@@ -37,20 +37,20 @@ module ThorSCMVersion
     method_option :default, type: :string, aliases: "-d"
     def bump_file(type, prerelease_type = nil)
       current_version.bump! type, options.merge(prerelease_type: prerelease_type)
-#      begin
+      begin
         say "Writing files: #{version_files.join(', ')}", :yellow
         write_version
         say "Creating and pushing tags & Version File", :yellow
         current_version.commit_push
         say "Tagged: #{current_version}", :green
-#      rescue => e
-        # say "Tagging #{current_version} and pushing VERSION file failed due to error", :red
-        # say e.to_s, :red
-        # if e.respond_to? :status_code
-        #   exit e.status_code
-        # else
-        #   exit 1
-        # end
+      rescue => e
+        say "Tagging #{current_version} failed due to error", :red
+        say e.to_s, :red
+        if e.respond_to? :status_code
+          exit e.status_code
+        else
+          exit 1
+        end
       end
     end
 
