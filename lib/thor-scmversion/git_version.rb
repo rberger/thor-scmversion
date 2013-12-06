@@ -31,12 +31,15 @@ module ThorSCMVersion
     end
 
     def commit_push
-      begin
+#      begin
+      say "git commit -a -m \"Version File #{self}\" #{self}"
         ShellUtils.sh "git commit -a -m \"Version File #{self}\" #{self}"
+      say "git tag -a -m \"Version #{self}\" #{self}"
         ShellUtils.sh "git tag -a -m \"Version #{self}\" #{self}"
-      rescue => e
-        raise GitTagDuplicateError.new(self.to_s)
-      end
+#      rescue => e
+#        raise GitTagDuplicateError.new(self.to_s)
+#      end
+      say "git push --tags || true"
       ShellUtils.sh "git push --tags || true"
     end
 
