@@ -30,6 +30,16 @@ module ThorSCMVersion
       ShellUtils.sh "git push --tags || true"
     end
 
+    def commit_push
+      begin
+        ShellUtils.sh "git commit -a -m \"Version File #{self}\" #{self}"
+        ShellUtils.sh "git tag -a -m \"Version #{self}\" #{self}"
+      rescue => e
+        raise GitTagDuplicateError.new(self.to_s)
+      end
+      ShellUtils.sh "git push --tags || true"
+    end
+
     # Check the commit messages to see what type of bump is required
     def auto_bump(options)
       last_tag = self.class.from_path.to_s
