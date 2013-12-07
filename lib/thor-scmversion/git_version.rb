@@ -37,7 +37,7 @@ module ThorSCMVersion
       rescue => e
         raise GitTagDuplicateError.new(self.to_s)
       end
-      ShellUtils.sh "git push --tags || true"
+      ShellUtils.sh "git push origin master --tags || true"
     end
 
     # Check the commit messages to see what type of bump is required
